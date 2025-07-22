@@ -16,4 +16,6 @@ This simple Flask application lets prospective tenants apply for an apartment on
 
 3. Open your browser at `http://localhost:5000` to access the web app.
 
-Submitted applications are saved to `applications.csv` in the project directory.
+Submitted applications are stored in `applications.db` (a SQLite database) in the
+project directory. Each entry records the applicant details along with the date
+and time the application was submitted.

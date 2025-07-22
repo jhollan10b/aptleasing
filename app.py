@@ -1,18 +1,55 @@
-from flask import Flask, render_template, request, redirect, url_for
-import csv
+from flask import Flask, render_template, request
+import sqlite3
+from datetime import datetime
 
 app = Flask(__name__)
 
-def save_application(data, filename='applications.csv'):
-    fieldnames = ['name', 'email', 'phone', 'apartment']
+DB_NAME = 'applications.db'
+
+
+def init_db():
+    """Ensure the applications table exists."""
+    conn = sqlite3.connect(DB_NAME)
     try:
-        with open(filename, 'a', newline='') as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            if csvfile.tell() == 0:
-                writer.writeheader()
-            writer.writerow(data)
+        conn.execute(
+            """
+            CREATE TABLE IF NOT EXISTS applications (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                email TEXT NOT NULL,
+                phone TEXT NOT NULL,
+                apartment TEXT NOT NULL,
+                date_submitted TEXT NOT NULL
+            )
+            """
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+
+def save_application(data):
+    """Save an application record to the SQLite database."""
+    conn = sqlite3.connect(DB_NAME)
+    try:
+        conn.execute(
+            """
+            INSERT INTO applications (name, email, phone, apartment, date_submitted)
+            VALUES (?, ?, ?, ?, ?)
+            """,
+            (
+                data['name'],
+                data['email'],
+                data['phone'],
+                data['apartment'],
+                datetime.utcnow().isoformat(timespec='seconds'),
+            ),
+        )
+        conn.commit()
     except Exception as e:
         print(f"Error saving application: {e}")
+    finally:
+        conn.close()
 
 @app.route('/')
 def index():
@@ -32,4 +69,5 @@ def apply():
     return render_template('apply.html')
 
 if __name__ == '__main__':
+    init_db()
     app.run(host='0.0.0.0', port=5000)
