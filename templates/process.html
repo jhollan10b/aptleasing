@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leasing Process</title>
+</head>
+<body>
+    <h1>Apartment Leasing Process</h1>
+    {% if step == 1 %}
+        <h2>Step 1: Respond to an apartment ad via email</h2>
+        <form method="post">
+            <label>Your Email: <input type="email" name="email" required></label><br>
+            <button type="submit">Next</button>
+        </form>
+    {% elif step == 2 %}
+        <h2>Step 2: Basic Questions</h2>
+        <form method="post">
+            <label>Number of Occupants: <input type="number" name="num_people" required></label><br>
+            <label>Move-in Date: <input type="date" name="move_in" required></label><br>
+            <label>Pets: <input type="text" name="pets"></label><br>
+            <label>Job: <input type="text" name="job"></label><br>
+            <label>Budget: <input type="text" name="budget"></label><br>
+            <button type="submit">Next</button>
+        </form>
+    {% elif step == 3 %}
+        <h2>Step 3: Set up appointment to see the apartment</h2>
+        <form method="post">
+            <label>Preferred Appointment Date/Time: <input type="text" name="appointment" required></label><br>
+            <button type="submit">Next</button>
+        </form>
+    {% elif step == 4 %}
+        <h2>Step 4: Fill out application</h2>
+        <form method="post">
+            <label>Name: <input type="text" name="name" required></label><br>
+            <label>Phone: <input type="text" name="phone" required></label><br>
+            <label>Apartment Interested In: <input type="text" name="apartment" required></label><br>
+            <button type="submit">Submit Application</button>
+        </form>
+    {% elif step == 5 %}
+        <h2>Step 5: Application approved - review lease</h2>
+        <form method="post">
+            <button type="submit">I have reviewed the lease</button>
+        </form>
+    {% elif step == 6 %}
+        <h2>Step 6: Sign lease and pay deposit and first month rent</h2>
+        <form method="post">
+            <button type="submit">I have signed and funded</button>
+        </form>
+    {% elif step == 7 %}
+        <h2>Step 7: Receive signed lease from apartment owner</h2>
+        <form method="post">
+            <button type="submit">Confirm Receipt</button>
+        </form>
+    {% elif step == 8 %}
+        <h2>Step 8: Set up electric and gas service</h2>
+        <form method="post">
+            <button type="submit">Service Arranged</button>
+        </form>
+    {% elif step == 9 %}
+        <h2>Step 9: Complete change of address form at postal service</h2>
+        <form method="post">
+            <button type="submit">Address Updated</button>
+        </form>
+    {% else %}
+        <h2>Step 10: Move in to the apartment</h2>
+        <p>Congratulations! You're ready to move in.</p>
+    {% endif %}
+    <p><a href="{{ url_for('index') }}">Back to home</a></p>
+</body>
+</html>
